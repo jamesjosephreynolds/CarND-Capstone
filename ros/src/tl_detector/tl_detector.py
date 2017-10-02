@@ -10,13 +10,15 @@ from light_classification.tl_classifier import TLClassifier
 import tf
 import cv2
 import yaml
-import sys, os
+import sys
+import os
 import math
 import numpy as np
+import glob
+
 from light_msgs.msg import UpcomingLight
 
 from tl_debug import TLDebug
-
 
 #################################
 # Build a dictionary for models
@@ -102,7 +104,12 @@ class TLDetector(object):
 
         # Initialize classifier with specified parameters
         if CLF_ON is True:
+            print("Loading inference graph ...")
             ckpt, label_map, n_classes = MODEL_DICT[model_id]
+
+            # Generate the model PD file
+            self.prepare_model_file(ckpt)
+
             self.light_classifier = TLClassifier(ckpt, label_map, n_classes, SCORE_THRESHOLD)
             self.light_classifier_on = True
             print("Light classifier is running")
@@ -118,6 +125,22 @@ class TLDetector(object):
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
         rospy.spin()
+
+    def prepare_model_file(self, model_path):
+        """Check if the model is in a single file or splitted in several files.
+           If the file is splitted in several files, it creates a single file with
+           all the parts in the right order.
+
+        Args:
+            model_path (String): model filename
+
+        """
+        if not os.path.exists(model_path):          
+            wildcard = model_path.replace('.pb','.*')
+            files    = sorted([file for file in glob.glob(wildcard)])
+
+            join_command = 'cat {} > {}'.format(" ".join(files), model_path)
+            os.system(join_command)
 
     def pose_cb(self, msg):
         self.pose = msg
@@ -347,8 +370,9 @@ class TLDetector(object):
         distance_car_tl = self.get_distance_between_poses(self.pose.pose, light.pose.pose) # Need the real distance
 
         #Publishing Images and metadata for debug and dataset generator
-        self.debug.publish_debug_image(cv_image, distance_car_tl, x, y) # Publishing in /debug/image_tl Use 'rqt' to visualize the image
-        self.debug.publish_debug_image_metadata(cv_image, 0, y-20, x-40, y+130, x+40) # Publishing in /debug/image_tl_metadata
+        if x != None and y != None:
+            self.debug.publish_debug_image(cv_image, distance_car_tl, x, y) # Publishing in /debug/image_tl Use 'rqt' to visualize the image
+            self.debug.publish_debug_image_metadata(cv_image, 0, y-20, x-40, y+130, x+40) # Publishing in /debug/image_tl_metadata
 
         #Get classification
         if self.light_classifier_on is True:

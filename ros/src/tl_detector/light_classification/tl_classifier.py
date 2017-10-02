@@ -65,7 +65,7 @@ class TLClassifier(object):
         # Number of objects detected
         self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
 
-        print("Detection graph loaded")
+        print("Inference graph loaded")
 
 
     def dist_box_center_to_point(self, box, point):

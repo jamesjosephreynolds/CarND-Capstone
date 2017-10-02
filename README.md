@@ -8,6 +8,15 @@
 * Peng Zhang (penggzhang@126.com)
 * Francisco Jose Rey Gozalo (fcojreyg@gmail.com)
 
+### Results:
+Below is a video of our car driving around the track 4 times in a 50 minute period:
+
+https://www.youtube.com/watch?v=A5ZHc05XyBk
+
+
+
+### Summary
+
 This is the Team Aurora project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
 ### Installation 
@@ -191,3 +200,29 @@ ang_err = self.LPFilt_Str.filt(ang_err)
 
 #### Final Steering Control Design
 The CTE based control was chosen in the end as it performed more robustly to momentary spikes in error signal (these may be artifacts of the simulator, or discontinuities in the waypoint calculations).
+
+## Traffic Light Detection Node
+Once the vehicle is able to process waypoints, generate steering and throttle commands, and traverse the course, it will also need stop for obstacles. Traffic lights are the first obstacle that we focus on.
+
+The traffic light detection node `tl_detector.py` subscribes to three topics:
+
+* `/base_waypoints` provides the complete list of waypoints for the course.
+* `/current_pose` is used to determine the vehicle's location.
+* `/image_color` which provides an image stream from the car's camera. These images are used to determine the color of upcoming traffic lights.
+
+The permanent `(x, y)` coordinates for each traffic light's stop line are provided by the config dictionary, which is imported from the `traffic_light_config` file.
+
+The node publish the index of the waypoint for nearest upcoming red light's stop line to a single topic: `/traffic_waypoint`.
+
+#### Pipeline
+The task for this light detection portion can be broken into two steps:
+
+1. Use the vehicle's location and the `(x, y)` coordinates for traffic light stop lines to find the nearest visible traffic light ahead of the vehicle. This takes place in the `process_traffic_lights` method of `tl_detector.py`. We use the `get_closest_waypoint` method to find the closest waypoints to the vehicle and lights. Using these waypoint indices, we determine which light is ahead of the vehicle along the list of waypoints.
+2. Locate the traffic light in the camera image data and classify its state. The functionality of locating the light takes place in the `get_light_state` method of `tl_detector.py`. For this task, we use the traffic light's exact position in 3D space as provided by the `vehicle/traffic_lights` topic rather than the 2D stop line position from the config file. And then the functionality of classifying the light's color state takes place in the `tl_classifier.py`. 
+
+#### Traffic Light Detection Package Files
+Within the traffic light detection package, there are following files to implement the whole detection-and-then-classification pipeline:
+
+* `tl_detector.py`: This python file processes the incoming traffic light data and camera images. It uses the light classifier to get a color prediction, and publishes the location of any upcoming red lights.
+* `tl_classifier.py`: This file contains the `TLClassifier class`. We use this class to implement traffic light classification. The `get_classification` method takes a camera image as input and return an ID corresponding to the color state of the traffic light in the image. 
+* `/models` directory: Under this directory, there are checkpoint files and label maps of trained networks for classifying light color state. Using these files, incoming images will run through the frozen inference graph and identified color states will be returned.
