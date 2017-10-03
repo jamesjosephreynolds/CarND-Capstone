@@ -1,16 +1,22 @@
 # TEAM AURORA: SDCND CAPSTONE PROJECT
 
-### Team Leader: Siva Kondubhatla (sivakirank@gmail.com)
+### Team Lead
+Siva Kondubhatla (sivakirank@gmail.com)
 
-### Team Members: 
-* Andrew Stewart (andrew.stewart2@honeywell.com) 
-* Jim Reynolds (jreyn121@ford.com) 
-* Peng Zhang (penggzhang@126.com)
-* Francisco Jose Rey Gozalo (fcojreyg@gmail.com)
+### Team Members 
+Andrew Stewart (andrew.stewart2@honeywell.com) 
+Jim Reynolds (jreyn121@ford.com) 
+Peng Zhang (penggzhang@126.com)
+Francisco Jose Rey Gozalo (fcojreyg@gmail.com)
 
 ### Summary
+This is the personal repo for [Jim Reynolds](https://github.com/jamesjosephreynolds), forked from the [Aurora team repo](https://github.com/DFStewart/CarND-Capstone).
 
-This is the personal repo, forked from the [Aurora team repo](https://github.com/DFStewart/CarND-Capstone).
+The overall project was broken up into two workflows:
+1. Waypoint update calculation and vehicle control
+2. Stoplight identification and state classification
+
+I focused on waypoint update calculation and vehicle control.
 
 ## Waypoint Update
 The geographical `x,y,z` position of the path waypoints are provided.  The waypoint updater must calculate the desired velocity (m/sec) at each of the waypoints.  
