@@ -10,7 +10,7 @@
 
 ### Summary
 
-This is the personal repo, forked from the [Aurora team report](https://github.com/DFStewart/CarND-Capstone).
+This is the personal repo, forked from the [Aurora team repo](https://github.com/DFStewart/CarND-Capstone).
 
 ## Waypoint Update
 The geographical `x,y,z` position of the path waypoints are provided.  The waypoint updater must calculate the desired velocity (m/sec) at each of the waypoints.  
