@@ -5,8 +5,11 @@ Siva Kondubhatla (sivakirank@gmail.com)
 
 ### Team Members 
 Andrew Stewart (andrew.stewart2@honeywell.com) 
+
 Jim Reynolds (jreyn121@ford.com) 
+
 Peng Zhang (penggzhang@126.com)
+
 Francisco Jose Rey Gozalo (fcojreyg@gmail.com)
 
 ### Summary
