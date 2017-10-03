@@ -164,9 +164,9 @@ Within the traffic light detection package, there are following files to impleme
 * `/models` directory: Under this directory, there are checkpoint files and label maps of trained networks for classifying light color state. Using these files, incoming images will run through the frozen inference graph and identified color states will be returned.
 
 ## Results:
-Below is a video of our car driving around the simulator track 4 times over a 50 minute period:
+Below is a [video](https://youtu.be/1fFbWDCZlmE) of our car driving around the simulator track 4 times over a 50 minute period:
 
-https://www.youtube.com/watch?v=A5ZHc05XyBk
+[![Whoops, there should be a picture here!](https://img.youtube.com/vi/A5ZHc05XyBk/0.jpg)](https://youtu.be/1fFbWDCZlmE)
 
 ## Installation Notes
 
