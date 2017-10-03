@@ -44,7 +44,7 @@ if vel_sq < 0.0:
     vel_sq = 0.0
 self.target_speed_mps = math.sqrt(vel_sq)
 ```
-where `vel_i` is the current vehicle velocity and `target_speed_mps` is the desired velocity at the `ith` waypoint.
+where `vel_i` is the current vehicle velocity, `pos_stopline` is the distance from the `ith` waypoint to the stopline, and `target_speed_mps` is the desired velocity at the `ith` waypoint.
 
 Detailed derivations of these calculation are available [here](/documentation/ConstantAccelDerivation.pdf).
 
