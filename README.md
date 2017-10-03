@@ -19,7 +19,11 @@ The overall project was broken up into two workflows:
 I focused on waypoint update calculation and vehicle control.
 
 ## Waypoint Update
-The geographical `x,y,z` position of the path waypoints are provided.  The waypoint updater must calculate the desired velocity (m/sec) at each of the waypoints.  
+The geographical `x,y,z` position of all path waypoints are provided.  The waypoint updater must calculate the desired velocity (m/sec) at each of the next `N` waypoints.  This includes both the longitudinal and lateral velocity.  The desired velocity at upcoming waypoints can generally be determined based on three cases:
+1. If the vehicle is at the desired speed, and there is no red light in the stop horizon, maintain the desired speed.
+2. If the vehicle speed is positive, and there is a red light in the stop horizon, calculate a decreasing velocity at the upcoming waypoints until a stop is planned at the stopline. `v(k) >= v(k+1) >= ... >= v(k+M) = 0`
+3. If the vehicle speed is less than the desired speed, and there is no red light in the stop horizon, calculate an increasing velocity at the upcoming waypoints until the desired velocity is reached. `v(k) <= v(k+1) <= ... <= v(k+M) = v_des`
+*Note that for this project, acceleration (case 3) is handled by the accelerator pedal PID controller, and the desired velocity is planned for all upcoming waypoints.*
 
 For the case where there is no red light within the stop horizon `STOP_DIST_ERR` the desired velocity determination is trivially set to a constant value `SPEED_MPH*MPH2MPS`.
 
